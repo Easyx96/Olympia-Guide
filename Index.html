@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Playground</title>
+    <script src="https://cdn.abacusai-usercontent.com/react/17/umd/react.production.min.js"></script>
+    <script src="https://cdn.abacusai-usercontent.com/react-dom/17/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.abacusai-usercontent.com/babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.abacusai-usercontent.com/prop-types/15.7.2/prop-types.min.js"></script>
+    <script src="https://cdn.abacusai-usercontent.com/recharts/2.5.0/umd/Recharts.min.js"></script>
+    <script src="https://cdn.abacusai-usercontent.com/material-ui/core/4.12.4/umd/material-ui.development.js"></script>
+    <link href="https://cdn.abacusai-usercontent.com/tailwindcss/2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.abacusai-usercontent.com/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        #error-container {
+            color: orange;
+            font-size: 16px;
+            margin: 12px;
+            min-height: 120px;
+            overflow-y: auto;
+            border: 1px solid orange;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #ff96000d;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="artifact_react"></div>
+    <div id="error-container"></div>
+    <script type="text/babel">
+        try {
+            const { useEffect, useMemo, useState } = React;
+const {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Container,
+  Box,
+  Divider,
+  Paper,
+  Chip,
+} = MaterialUI;
+
+function App() {
+  const [activeTab, setActiveTab] = useState("home");
+  const [isMobile, setIsMobile] = useState(false);
+  const [language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 720);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  useEffect(() => {
+    const decodeUnicode = (str) => {
+      return str.replace(/\\u[\dA-Fa-f]{4}/g, (match) => {
+        return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+      });
+    };
+
+    const fixTextNodes = (node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const decoded = decodeUnicode(node.textContent);
+        if (decoded !== node.textContent) {
+          node.textContent = decoded;
+        }
+      } else {
+        node.childNodes.forEach(fixTextNodes);
+      }
+    };
+
+    const observer = new MutationObserver(() => {
+      fixTextNodes(document.body);
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    fixTextNodes(document.body);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const translations = useMemo(() => ({
+    en: {
+      headerTitle: "Great Escape Olympia",
+      headerSub: "Ancient Olympia vibes, olive trees, and easy local tips",
+      home: "Home",
+      house: "House",
+      dining: "Dining",
+      beaches: "Beaches",
+      essentials: "Essentials",
+      excursions: "Excursions",
+      emergency: "Emergency",
+      welcome: "Welcome",
+      welcomeSub: "Everything you need for a smooth stay. Quick info first.",
+      checkIn: "Check in",
+      checkOut: "Check out",
+      wifiName: "WiFi Name",
+      navigateToProperty: "Navigate to Property",
+      emergencyNumbers: "Emergency Numbers",
+      contactHost: "Contact your host",
+      whatsapp: "WhatsApp",
+      call: "Call",
+      quickShortcuts: "Quick shortcuts",
+      navigate: "Navigate",
+      navigateSub: "Open Google Maps to the property",
+      wifi: "WiFi",
+      wifiSub: "See WiFi name and password",
+      beachesSub: "Best spots nearby",
+      foodDrinks: "Food and Drinks",
+      foodDrinksSub: "Tavernas and bars",
+      excursionsSub: "Day trips and ideas",
+      tipSave: "Tip: Save this page or open it from the QR code anytime.",
+      houseInfo: "House info",
+      houseInfoSub: "The essentials, clearly.",
+      password: "Password",
+      quickConnectWifi: "Quick Connect WiFi",
+      diningTitle: "Dining",
+      diningSub: "Tavernas, cafes and bars.",
+      beachesTitle: "Beaches",
+      beachesTitleSub: "Best spots to enjoy the sea.",
+      essentialsTitle: "Essentials",
+      essentialsSub: "Groceries and quick stops.",
+      excursionsTitle: "Excursions",
+      excursionsTitleSub: "Easy ideas for a great day out.",
+      whatToTake: "What to take",
+      website: "Website",
+      tipExcursions: "Tip: Start early in summer. Roads can be slower and the midday sun is strong.",
+      emergencyTitle: "Emergency numbers",
+      emergencySub: "Tap Call on a phone.",
+      tipEmergency: "If you are not sure what to do, call",
+      first: "first.",
+      enjoyStay: "Enjoy your stay",
+    },
+    de: {
+      headerTitle: "Great Escape Olympia",
+      headerSub: "Antikes Olympia, Olivenbäume und lokale Tipps",
+      home: "Start",
+      house: "Haus",
+      dining: "Restaurants",
+      beaches: "Strände",
+      essentials: "Wichtiges",
+      excursions: "Ausflüge",
+      emergency: "Notfall",
+      welcome: "Willkommen",
+      welcomeSub: "Alles was du für einen reibungslosen Aufenthalt brauchst. Zuerst die wichtigsten Infos.",
+      checkIn: "Check-in",
+      checkOut: "Check-out",
+      wifiName: "WLAN Name",
+      navigateToProperty: "Navigation zur Unterkunft",
+      emergencyNumbers: "Notfallnummern",
+      contactHost: "Kontaktiere deinen Gastgeber",
+      whatsapp: "WhatsApp",
+      call: "Anrufen",
+      quickShortcuts: "Schnellzugriff",
+      navigate: "Navigation",
+      navigateSub: "Google Maps zur Unterkunft öffnen",
+      wifi: "WLAN",
+      wifiSub: "WLAN Name und Passwort ansehen",
+      beachesSub: "Die besten Orte in der Nähe",
+      foodDrinks: "Essen und Trinken",
+      foodDrinksSub: "Tavernen und Bars",
+      excursionsSub: "Tagesausflüge und Ideen",
+      tipSave: "Tipp: Speichere diese Seite oder öffne sie jederzeit über den QR-Code.",
+      houseInfo: "Haus Info",
+      houseInfoSub: "Das Wesentliche, klar und deutlich.",
+      password: "Passwort",
+      quickConnectWifi: "WLAN Schnellverbindung",
+      diningTitle: "Restaurants",
+      diningSub: "Tavernen, Cafés und Bars.",
+      beachesTitle: "Strände",
+      beachesTitleSub: "Die besten Orte um das Meer zu genießen.",
+      essentialsTitle: "Wichtiges",
+      essentialsSub: "Lebensmittel und schnelle Stopps.",
+      excursionsTitle: "Ausflüge",
+      excursionsTitleSub: "Einfache Ideen für einen tollen Tag.",
+      whatToTake: "Was mitnehmen",
+      website: "Webseite",
+      tipExcursions: "Tipp: Starte früh im Sommer. Die Straßen können langsamer sein und die Mittagssonne ist stark.",
+      emergencyTitle: "Notfallnummern",
+      emergencySub: "Tippe auf Anrufen am Telefon.",
+      tipEmergency: "Wenn du nicht sicher bist was zu tun ist, rufe",
+      first: "zuerst an.",
+      enjoyStay: "Genieße deinen Aufenthalt",
+    },
+    fr: {
+      headerTitle: "Great Escape Olympia",
+      headerSub: "Ambiance d'Olympie antique, oliviers et conseils locaux",
+      home: "Accueil",
+      house: "Maison",
+      dining: "Restaurants",
+      beaches: "Plages",
+      essentials: "Essentiels",
+      excursions: "Excursions",
+      emergency: "Urgence",
+      welcome: "Bienvenue",
+      welcomeSub: "Tout ce dont vous avez besoin pour un séjour agréable. D'abord les infos rapides.",
+      checkIn: "Arrivée",
+      checkOut: "Départ",
+      wifiName: "Nom WiFi",
+      navigateToProperty: "Naviguer vers la propriété",
+      emergencyNumbers: "Numéros d'urgence",
+      contactHost: "Contactez votre hôte",
+      whatsapp: "WhatsApp",
+      call: "Appeler",
+      quickShortcuts: "Raccourcis rapides",
+      navigate: "Naviguer",
+      navigateSub: "Ouvrir Google Maps vers la propriété",
+      wifi: "WiFi",
+      wifiSub: "Voir le nom et mot de passe WiFi",
+      beachesSub: "Les meilleurs endroits à proximité",
+      foodDrinks: "Nourriture et boissons",
+      foodDrinksSub: "Tavernes et bars",
+      excursionsSub: "Excursions d'une journée et idées",
+      tipSave: "Astuce: Enregistrez cette page ou ouvrez-la depuis le code QR à tout moment.",
+      houseInfo: "Info maison",
+      houseInfoSub: "L'essentiel, clairement.",
+      password: "Mot de passe",
+      quickConnectWifi: "Connexion WiFi rapide",
+      diningTitle: "Restaurants",
+      diningSub: "Tavernes, cafés et bars.",
+      beachesTitle: "Plages",
+      beachesTitleSub: "Les meilleurs endroits pour profiter de la mer.",
+      essentialsTitle: "Essentiels",
+      essentialsSub: "Épicerie et arrêts rapides.",
+      excursionsTitle: "Excursions",
+      excursionsTitleSub: "Idées faciles pour une belle journée.",
+      whatToTake: "Quoi apporter",
+      website: "Site web",
+      tipExcursions: "Astuce: Partez tôt en été. Les routes peuvent être plus lentes et le soleil de midi est fort.",
+      emergencyTitle: "Numéros d'urgence",
+      emergencySub: "Appuyez sur Appeler sur un téléphone.",
+      tipEmergency: "Si vous ne savez pas quoi faire, appelez",
+      first: "d'abord.",
+      enjoyStay: "Profitez de votre séjour",
+    },
+    el: {
+      headerTitle: "Great Escape Olympia",
+      headerSub: "Αρχαία Ολυμπία, ελαιόδεντρα και τοπικές συμβουλές",
+      home: "Αρχική",
+      house: "Σπίτι",
+      dining: "Εστιατόρια",
+      beaches: "Παραλίες",
+      essentials: "Απαραίτητα",
+      excursions: "Εκδρομές",
+      emergency: "Έκτακτη Ανάγκη",
+      welcome: "Καλώς ήρθατε",
+      welcomeSub: "Όλα όσα χρειάζεστε για μια ομαλή διαμονή. Πρώτα οι γρήγορες πληροφορίες.",
+      checkIn: "Άφιξη",
+      checkOut: "Αναχώρηση",
+      wifiName: "Όνομα WiFi",
+      navigateToProperty: "Πλοήγηση στο κατάλυμα",
+      emergencyNumbers: "Αριθμοί έκτακτης ανάγκης",
+      contactHost: "Επικοινωνήστε με τον οικοδεσπότη σας",
+      whatsapp: "WhatsApp",
+      call: "Κλήση",
+      quickShortcuts: "Γρήγορες συντομεύσεις",
+      navigate: "Πλοήγηση",
+      navigateSub: "Άνοιγμα Google Maps στο κατάλυμα",
+      wifi: "WiFi",
+      wifiSub: "Δείτε το όνομα και τον κωδικό WiFi",
+      beachesSub: "Τα καλύτερα μέρη κοντά",
+      foodDrinks: "Φαγητό και ποτά",
+      foodDrinksSub: "Ταβέρνες και μπαρ",
+      excursionsSub: "Ημερήσιες εκδρομές και ιδέες",
+      tipSave: "Συμβουλή: Αποθηκεύστε αυτή τη σελίδα ή ανοίξτε την από τον κωδικό QR ανά πάσα στιγμή.",
+      houseInfo: "Πληροφορίες σπιτιού",
+      houseInfoSub: "Τα απαραίτητα, ξεκάθαρα.",
+      password: "Κωδικός",
+      quickConnectWifi: "Γρήγορη σύνδεση WiFi",
+      diningTitle: "Εστιατόρια",
+      diningSub: "Ταβέρνες, καφέ και μπαρ.",
+      beachesTitle: "Παραλίες",
+      beachesTitleSub: "Τα καλύτερα μέρη για να απολαύσετε τη θάλασσα.",
+      essentialsTitle: "Απαραίτητα",
+      essentialsSub: "Παντοπωλεία και γρήγορες στάσεις.",
+      excursionsTitle: "Εκδρομές",
+      excursionsTitleSub: "Εύκολες ιδέες για μια υπέροχη μέρα.",
+      whatToTake: "Τι να πάρετε μαζί",
+      website: "Ιστοσελίδα",
+      tipExcursions: "Συμβουλή: Ξεκινήστε νωρίς το καλοκαίρι. Οι δρόμοι μπορεί να είναι πιο αργοί και ο μεσημεριανός ήλιος είναι δυνατός.",
+      emergencyTitle: "Αριθμοί έκτακτης ανάγκης",
+      emergencySub: "Πατήστε Κλήση σε ένα τηλέφωνο.",
+      tipEmergency: "Αν δεν είστε σίγουροι τι να κάνετε, καλέστε",
+      first: "πρώτα.",
+      enjoyStay: "Απολαύστε τη διαμονή σας",
+    },
+  }), []);
+
+  const t = translations[language];
+
+  const data = useMemo(
+    () => ({
+      property: {
+        name: "Great Escape Olympia",
+        maps: "https://maps.app.goo.gl/yw7onjiK6WGHitfa9",
+        checkin: "15:00",
+        checkout: "11:00",
+        wifi: {
+          name: "Wifi",
+          password: "12345678",
+        },
+        contact: {
+          whatsapp: "+30 6944955891",
+          phone: "+30 6942243185",
+        },
+      },
+      dining: [
+        {
+          name: "Taverna The Garden",
+          type: "Taverna",
+          detail: "A lovely garden setting with classic Greek food.",
+          maps: "https://share.google/7wyWq9zpTmN3Nuad6",
+          icon: "🌳",
+          drive: "Approx. 4 min drive, 4 km",
+        },
+        {
+          name: "Taverna Orestis",
+          type: "Traditional Greek taverna",
+          detail: "Great local dishes and authentic atmosphere.",
+          maps: "https://maps.app.goo.gl/AJEWD1L3kNxNGVmq9",
+          icon: "🍽️",
+          drive: "Approx. 6 min drive, 8 km",
+        },
+        {
+          name: "Taverna Pheidias",
+          type: "Local cuisine",
+          detail: "Classic Greek plates and friendly service.",
+          maps: "https://maps.app.goo.gl/5rC2fFXrUMctUa8C9",
+          icon: "🥗",
+          drive: "Approx. 6 min drive, 7 km",
+        },
+        {
+          name: "Zeys Cafe",
+          type: "Cafe and food",
+          detail: "Coffee plus burgers, pizzas and more. Great for a quick bite.",
+          maps: "https://maps.app.goo.gl/KksKjUBSmyX7tbzz5",
+          icon: "☕",
+          drive: "Approx. 5 min drive, 8 km",
+        },
+        {
+          name: "Zorbas Cocktail and Wine Bar",
+          type: "Cocktails and wine",
+          detail: "Amazing view. Perfect for sunset drinks and relaxing evenings.",
+          maps: "https://share.google/vV2EhQsw4QpCRBjoK",
+          icon: "🍷",
+          drive: "Approx. 5 min drive, 10 km",
+        },
+        {
+          name: "Sweet Creations Bakery",
+          type: "Bakery",
+          detail: "Fresh pastries, bread, and local sweets.",
+          maps: "https://maps.app.goo.gl/cxRWojUgukCvjfh67",
+          icon: "🥐",
+          drive: "Approx. 5 min drive, 7 km",
+        },
+      ],
+      beaches: [
+        {
+          name: "Kato Samiko",
+          type: "Sea and views",
+          detail: "A beautiful swim spot with a great coastal feel.",
+          maps: "https://maps.app.goo.gl/tVtdHtFErLPHAiBVA",
+          icon: "🌊",
+          drive: "Approx. 22 min drive, 20 km",
+        },
+        {
+          name: "Kaiafas Beach",
+          type: "Long sandy beach",
+          detail: "Famous for its golden sand and clear waters.",
+          maps: "https://maps.app.goo.gl/DVdQEjJVVDVxW34F7",
+          icon: "🏖️",
+          drive: "Approx. 28 min drive, 26 km",
+        },
+        {
+          name: "Sol Y Mar",
+          type: "Beach club",
+          detail: "Food, drinks, and sunbeds right by the sea.",
+          maps: "https://maps.app.goo.gl/4Dic2h7GuKvQkV1m8",
+          icon: "🍹",
+          drive: "Approx. 32 min drive, 30 km",
+        },
+      ],
+      essentials: [
+        {
+          name: "AB Vasilopoulos",
+          type: "Supermarket",
+          detail: "The main spot for groceries and household basics.",
+          maps: "https://maps.app.goo.gl/CUvxFAe9Gau2EtjP7",
+          icon: "🛒",
+          drive: "Approx. 6 min drive, 9 km",
+        },
+        {
+          name: "Bank and ATM",
+          type: "Bank services",
+          detail: "Cash withdrawal and basic banking services.",
+          maps: "https://maps.app.goo.gl/1zpNu7PAjpUYVLuq7",
+          icon: "🏦",
+          drive: "Approx. 5 min drive, 7 km",
+        },
+        {
+          name: "Mini Market",
+          type: "Local shop",
+          detail: "Convenient for quick essentials, water, and snacks.",
+          maps: "https://maps.app.goo.gl/Zxxvda2Bvznova7s8",
+          icon: "🏪",
+          drive: "Approx. 5 min drive, 7 km",
+        },
+        {
+          name: "24 hour Self Service Gas Station",
+          type: "Fuel",
+          detail: "Automated station. Cards only. Useful for late arrivals.",
+          maps: "https://maps.app.goo.gl/S8ZKQJBqCiQRjgNY7",
+          icon: "⛽",
+          drive: "Approx. 12 min drive, 14 km",
+        },
+      ],
+      excursions: [
+        {
+          name: "Ancient Olympia Archaeological Site",
+          type: "Must see",
+          detail: "The iconic ruins where the Olympic Games were born.",
+          maps: "https://maps.app.goo.gl/yw7onjiK6WGHitfa9",
+          icon: "🏟️",
+          drive: "Approx. 5 min drive, 8 km",
+          tips: [
+            "Go in the morning for shade",
+            "Bring water and sunscreen",
+            "Comfortable shoes are a must",
+          ],
+        },
+        {
+          name: "Olympia Land Winery",
+          type: "Winery",
+          detail: "Local wines and a relaxed visit. Great for an easy afternoon.",
+          maps: "https://share.google/84AA2HTpPLzcZo3VD",
+          icon: "🍷",
+          drive: "Approx. 15 min drive, 12 km",
+          tips: [
+            "Book ahead if possible",
+            "Bring a light jacket for evenings",
+            "Consider a driver if you plan a tasting",
+          ],
+          website: "https://www.olympiagi.gr/en/home/",
+        },
+        {
+          name: "Klio's honey farm",
+          type: "Farm visit",
+          detail: "A sweet local experience. Learn about honey making and try local products.",
+          maps: "https://share.google/ursXyYF6jXCEPWcFj",
+          icon: "🍯",
+          drive: "Approx. 10 min drive, 11 km",
+          tips: [
+            "Bring cash for small purchases",
+            "Great for kids",
+            "Wear closed shoes if you walk around the farm",
+          ],
+          website: "https://www.klioshoneyfarm.com/",
+        },
+        {
+          name: "Archimedes Museum",
+          type: "Museum",
+          detail: "Fascinating cultural stop in the heart of Olympia.",
+          maps: "https://maps.app.goo.gl/4buCJV7k1mrFVGXu9",
+          icon: "🏛️",
+          drive: "Approx. 5 min drive, 7 km",
+          tips: ["Great for families", "Combine with lunch in town"],
+        },
+        {
+          name: "Temple of Apollo (Andritsaina)",
+          type: "Excursion",
+          detail: "A stunning ancient site in the mountains. Plan a half day trip.",
+          maps: "https://share.google/VmYwbOn0mqWutAGTv",
+          icon: "🏺",
+          drive: "Approx. 55 min drive, 55 km",
+          tips: [
+            "Bring water, hat, sunscreen",
+            "Wear comfortable shoes",
+            "Take some cash for small stops",
+            "Go early or late for cooler weather",
+          ],
+        },
+      ],
+      emergency: [
+        { title: "European Emergency", number: "112", icon: "🆘" },
+        { title: "Hellenic Police", number: "100", icon: "👮" },
+        { title: "Hellenic Fire Service", number: "199", icon: "🚒" },
+        { title: "Medical Emergency (EKAB)", number: "166", icon: "🚑" },
+        { title: "Hellenic Coast Guard", number: "108", icon: "⚓" },
+        { title: "National Child Protection Helpline", number: "1056", icon: "🧒" },
+        { title: "European Hotline for Missing Children", number: "116000", icon: "🔎" },
+        { title: "EU Helpline for Children and Teenagers", number: "116111", icon: "💬" },
+      ],
+    }),
+    []
+  );
+
+  const tabs = useMemo(
+    () => [
+      { id: "home", label: t.home, icon: "🏠" },
+      { id: "house", label: t.house, icon: "🔑" },
+      { id: "dining", label: t.dining, icon: "🍽️" },
+      { id: "beaches", label: t.beaches, icon: "🏖️" },
+      { id: "essentials", label: t.essentials, icon: "🛒" },
+      { id: "excursions", label: t.excursions, icon: "🗺️" },
+      { id: "emergency", label: t.emergency, icon: "🆘" },
+    ],
+    [t]
+  );
+
+  const styles = {
+    bg: {
+      minHeight: "100vh",
+      backgroundImage: "url(generated_image_1770713355_0.png)",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundAttachment: isMobile ? "scroll" : "fixed",
+    },
+    overlay: {
+      minHeight: "100vh",
+      background:
+        "linear-gradient(180deg, rgba(6, 40, 25, 0.70) 0%, rgba(243, 244, 246, 0.92) 36%, rgba(243, 244, 246, 0.98) 100%)",
+      paddingBottom: isMobile ? 96 : 48,
+    },
+    header: {
+      background:
+        "linear-gradient(135deg, rgba(22, 101, 52, 0.95), rgba(6, 95, 70, 0.95))",
+      color: "#fff",
+      borderRadius: 0,
+      padding: isMobile ? "22px 14px" : "32px 16px",
+      position: "sticky",
+      top: 0,
+      zIndex: 5,
+      backdropFilter: "blur(8px)",
+    },
+    headerTitle: {
+      fontWeight: 800,
+      letterSpacing: 0.2,
+      fontFamily: "serif",
+      lineHeight: 1.1,
+    },
+    headerSub: {
+      opacity: 0.95,
+      marginTop: 6,
+    },
+    topNav: {
+      marginTop: 14,
+      display: isMobile ? "none" : "flex",
+      gap: 10,
+      justifyContent: "center",
+      flexWrap: "wrap",
+    },
+    shell: {
+      marginTop: isMobile ? 16 : 18,
+    },
+    card: {
+      borderRadius: 18,
+      background: "rgba(255,255,255,0.92)",
+      boxShadow: "0 10px 30px rgba(0,0,0,0.12)",
+      border: "1px solid rgba(15, 23, 42, 0.06)",
+    },
+    sectionTitleWrap: {
+      display: "flex",
+      alignItems: "center",
+      gap: 10,
+      marginBottom: 10,
+    },
+    pillRow: {
+      display: "flex",
+      gap: 10,
+      flexWrap: "wrap",
+      marginTop: 12,
+    },
+    primaryBtn: {
+      backgroundColor: "#f59e0b",
+      color: "#111827",
+      fontWeight: 800,
+      borderRadius: 14,
+      padding: isMobile ? "12px 14px" : "12px 16px",
+      textTransform: "none",
+    },
+    secondaryBtn: {
+      backgroundColor: "#2563eb",
+      color: "#fff",
+      fontWeight: 800,
+      borderRadius: 14,
+      padding: isMobile ? "10px 12px" : "10px 14px",
+      textTransform: "none",
+    },
+    ghostBtn: {
+      borderRadius: 14,
+      textTransform: "none",
+      fontWeight: 800,
+    },
+    bottomNav: {
+      position: "fixed",
+      left: 0,
+      right: 0,
+      bottom: 0,
+      zIndex: 10,
+      padding: 10,
+      display: isMobile ? "block" : "none",
+    },
+    bottomNavInner: {
+      margin: "0 auto",
+      maxWidth: 720,
+      background: "rgba(255,255,255,0.94)",
+      border: "1px solid rgba(15, 23, 42, 0.08)",
+      boxShadow: "0 14px 40px rgba(0,0,0,0.18)",
+      borderRadius: 18,
+      padding: "8px 8px",
+      display: "flex",
+      justifyContent: "space-between",
+      gap: 8,
+      overflowX: "auto",
+    },
+    bottomNavBtn: {
+      minWidth: 92,
+      borderRadius: 14,
+      textTransform: "none",
+      fontWeight: 800,
+      padding: "10px 10px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      lineHeight: 1.1,
+    },
+    tiny: {
+      fontSize: 12,
+      opacity: 0.86,
+    },
+  };
+
+  const TabChip = ({ tab }) => {
+    const selected = activeTab === tab.id;
+    return (
+      <Chip
+        label={`${tab.icon} ${tab.label}`}
+        onClick={() => setActiveTab(tab.id)}
+        clickable
+        style={{
+          background: selected ? "rgba(250, 204, 21, 0.95)" : "rgba(255,255,255,0.14)",
+          color: selected ? "#111827" : "#fff",
+          border: selected ? "1px solid rgba(17,24,39,0.12)" : "1px solid rgba(255,255,255,0.20)",
+          fontWeight: 900,
+        }}
+      />
+    );
+  };
+
+  const SectionTitle = ({ icon, title, subtitle }) => (
+    <Box style={{ marginBottom: 12 }}>
+      <Box style={styles.sectionTitleWrap}>
+        <Typography variant="h5" style={{ fontWeight: 900, color: "#0f172a" }}>
+          {icon}
+        </Typography>
+        <Box>
+          <Typography variant="h5" style={{ fontWeight: 900, color: "#0f172a" }}>
+            {title}
+          </Typography>
+          {subtitle ? (
+            <Typography variant="body2" style={{ color: "#475569", marginTop: 2 }}>
+              {subtitle}
+            </Typography>
+          ) : null}
+        </Box>
+      </Box>
+      <Divider />
+    </Box>
+  );
+
+  const PlaceCard = ({ icon, name, type, detail, drive, maps }) => (
+    <Card style={{ ...styles.card, marginBottom: 14 }}>
+      <CardContent>
+        <Box style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+          <Box
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: 14,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "rgba(22, 163, 74, 0.10)",
+              border: "1px solid rgba(22, 163, 74, 0.18)",
+              flexShrink: 0,
+              fontSize: 22,
+            }}
+          >
+            {icon}
+          </Box>
+          <Box style={{ flex: 1 }}>
+            <Typography variant="h6" style={{ fontWeight: 900, color: "#0f172a", lineHeight: 1.2 }}>
+              {name}
+            </Typography>
+            <Typography variant="body2" style={{ color: "#475569", marginTop: 4 }}>
+              {type}
+            </Typography>
+            {detail ? (
+              <Typography variant="body2" style={{ color: "#334155", marginTop: 6 }}>
+                {detail}
+              </Typography>
+            ) : null}
+            {drive ? (
+              <Typography variant="body2" style={{ color: "#0f172a", marginTop: 8, fontWeight: 800 }}>
+                🚗 {drive}
+              </Typography>
+            ) : null}
+            <Box style={{ marginTop: 12, display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <Button href={maps} target="_blank" variant="contained" style={styles.secondaryBtn}>
+                📍 {t.navigate}
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </CardContent>
+    </Card>
+  );
+
+  const EmergencyCard = ({ icon, title, number }) => (
+    <Card style={{ ...styles.card, marginBottom: 12 }}>
+      <CardContent>
+        <Box style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+          <Box style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <Box
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 14,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "rgba(239, 68, 68, 0.10)",
+                border: "1px solid rgba(239, 68, 68, 0.18)",
+                fontSize: 22,
+                flexShrink: 0,
+              }}
+            >
+              {icon}
+            </Box>
+            <Box>
+              <Typography variant="subtitle1" style={{ fontWeight: 900, color: "#0f172a", lineHeight: 1.2 }}>
+                {title}
+              </Typography>
+              <Typography variant="h6" style={{ fontWeight: 900, color: "#ef4444", marginTop: 2 }}>
+                {number}
+              </Typography>
+            </Box>
+          </Box>
+          <Button
+            href={`tel:${number}`}
+            variant="contained"
+            style={{
+              background: "#ef4444",
+              color: "#fff",
+              fontWeight: 900,
+              borderRadius: 14,
+              textTransform: "none",
+              padding: "10px 14px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            📞 {t.call}
+          </Button>
+        </Box>
+      </CardContent>
+    </Card>
+  );
+
+  const QuickAction = ({ icon, title, subtitle, onClick, href, color }) => {
+    const common = {
+      flex: "1 1 220px",
+      textAlign: "left",
+      borderRadius: 16,
+      padding: "14px 14px",
+      border: "1px solid rgba(15, 23, 42, 0.08)",
+      background: "rgba(255,255,255,0.88)",
+      boxShadow: "0 10px 30px rgba(0,0,0,0.10)",
+      textTransform: "none",
+      justifyContent: "flex-start",
+      gap: 12,
+    };
+
+    const inner = (
+      <Box style={{ display: "flex", alignItems: "center", gap: 12, width: "100%" }}>
+        <Box
+          style={{
+            width: 46,
+            height: 46,
+            borderRadius: 16,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: color,
+            color: "#fff",
+            fontSize: 22,
+            flexShrink: 0,
+          }}
+        >
+          {icon}
+        </Box>
+        <Box style={{ flex: 1 }}>
+          <Typography variant="subtitle1" style={{ fontWeight: 900, color: "#0f172a", lineHeight: 1.2 }}>
+            {title}
+          </Typography>
+          <Typography variant="body2" style={{ color: "#475569", marginTop: 2 }}>
+            {subtitle}
+          </Typography>
+        </Box>
+      </Box>
+    );
+
+    if (href) {
+      return (
+        <Button href={href} target={href.startsWith("http") ? "_blank" : undefined} onClick={onClick} style={common}>
+          {inner}
+        </Button>
+      );
+    }
+
+    return (
+      <Button onClick={onClick} style={common}>
+        {inner}
+      </Button>
+    );
+  };
+
+  const renderHome = () => (
+    <Box style={styles.shell}>
+      <Card style={styles.card}>
+        <CardContent>
+          <SectionTitle icon="🌿" title={t.welcome} subtitle={t.welcomeSub} />
+
+          <Box style={styles.pillRow}>
+            <Box style={{ padding: "10px 12px", borderRadius: 14, background: "rgba(22, 163, 74, 0.10)", border: "1px solid rgba(22, 163, 74, 0.18)" }}>
+              <Typography variant="body2" style={{ fontWeight: 900, color: "#14532d" }}>🔑 {t.checkIn}: {data.property.checkin}</Typography>
+            </Box>
+            <Box style={{ padding: "10px 12px", borderRadius: 14, background: "rgba(245, 158, 11, 0.12)", border: "1px solid rgba(245, 158, 11, 0.18)" }}>
+              <Typography variant="body2" style={{ fontWeight: 900, color: "#92400e" }}>🚪 {t.checkOut}: {data.property.checkout}</Typography>
+            </Box>
+            <Box style={{ padding: "10px 12px", borderRadius: 14, background: "rgba(37, 99, 235, 0.10)", border: "1px solid rgba(37, 99, 235, 0.18)" }}>
+              <Typography variant="body2" style={{ fontWeight: 900, color: "#1e3a8a" }}>📶 {t.wifiName}: {data.property.wifi.name}</Typography>
+            </Box>
+          </Box>
+
+          <Box style={{ marginTop: 16, display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <Button href={data.property.maps} target="_blank" variant="contained" style={styles.primaryBtn}>📍 {t.navigateToProperty}</Button>
+            <Button onClick={() => setActiveTab("emergency")} variant="outlined" style={{ ...styles.ghostBtn, border: "2px solid rgba(239, 68, 68, 0.30)", color: "#b91c1c" }}>🆘 {t.emergencyNumbers}</Button>
+          </Box>
+
+          <Divider style={{ margin: "18px 0" }} />
+
+          <Typography variant="subtitle1" style={{ fontWeight: 900, color: "#0f172a", marginBottom: 10 }}>{t.contactHost}</Typography>
+
+          <Box style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 18 }}>
+            <Button href={`https://wa.me/${data.property.contact.whatsapp.replace(/\s/g, "")}`} target="_blank" variant="contained" style={{ flex: "1 1 220px", backgroundColor: "#25D366", color: "#fff", fontWeight: 800, borderRadius: 14, padding: "14px 16px", textTransform: "none" }}>💬 {t.whatsapp}</Button>
+            <Button href={`tel:${data.property.contact.phone}`} variant="contained" style={{ flex: "1 1 220px", backgroundColor: "#2563eb", color: "#fff", fontWeight: 800, borderRadius: 14, padding: "14px 16px", textTransform: "none" }}>📞 {t.call}</Button>
+          </Box>
+
+          <Divider style={{ margin: "18px 0" }} />
+
+          <Typography variant="subtitle1" style={{ fontWeight: 900, color: "#0f172a", marginBottom: 10 }}>{t.quickShortcuts}</Typography>
+
+          <Box style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <QuickAction icon="📍" title={t.navigate} subtitle={t.navigateSub} href={data.property.maps} color="#f59e0b" />
+            <QuickAction icon="📶" title={t.wifi} subtitle={t.wifiSub} onClick={() => setActiveTab("house")} color="#2563eb" />
+            <QuickAction icon="🏖️" title={t.beaches} subtitle={t.beachesSub} onClick={() => setActiveTab("beaches")} color="#0ea5e9" />
+            <QuickAction icon="🍽️" title={t.foodDrinks} subtitle={t.foodDrinksSub} onClick={() => setActiveTab("dining")} color="#ea580c" />
+            <QuickAction icon="🗺️" title={t.excursions} subtitle={t.excursionsSub} onClick={() => setActiveTab("excursions")} color="#16a34a" />
+          </Box>
+        </CardContent>
+      </Card>
+
+      <Box style={{ marginTop: 16, textAlign: "center" }}>
+        <Typography variant="body2" style={{ color: "rgba(15, 23, 42, 0.72)" }}>{t.tipSave}</Typography>
+      </Box>
+    </Box>
+  );
+
+  const renderHouse = () => (
+    <Box style={styles.shell}>
+      <Card style={styles.card}>
+        <CardContent>
+          <SectionTitle icon="🔑" title={t.houseInfo} subtitle={t.houseInfoSub} />
+
+          <Box style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <Box style={{ flex: "1 1 220px", padding: 14, borderRadius: 16, background: "rgba(22, 163, 74, 0.10)", border: "1px solid rgba(22, 163, 74, 0.18)" }}>
+              <Typography variant="subtitle2" style={{ fontWeight: 900, color: "#14532d" }}>⏰ {t.checkIn}</Typography>
+              <Typography variant="h6" style={{ fontWeight: 900, color: "#0f172a" }}>{data.property.checkin}</Typography>
+            </Box>
+            <Box style={{ flex: "1 1 220px", padding: 14, borderRadius: 16, background: "rgba(245, 158, 11, 0.12)", border: "1px solid rgba(245, 158, 11, 0.18)" }}>
+              <Typography variant="subtitle2" style={{ fontWeight: 900, color: "#92400e" }}>🚪 {t.checkOut}</Typography>
+              <Typography variant="h6" style={{ fontWeight: 900, color: "#0f172a" }}>{data.property.checkout}</Typography>
+            </Box>
+          </Box>
+
+          <Divider style={{ margin: "18px 0" }} />
+
+          <Box style={{ padding: 14, borderRadius: 16, background: "rgba(37, 99, 235, 0.10)", border: "1px solid rgba(37, 99, 235, 0.18)" }}>
+            <Typography variant="subtitle2" style={{ fontWeight: 900, color: "#1e3a8a", marginBottom: 8 }}>📶 {t.wifi}</Typography>
+            <Typography variant="body1" style={{ marginTop: 6 }}><strong>{t.wifiName}:</strong> {data.property.wifi.name}</Typography>
+            <Typography variant="body1" style={{ marginTop: 6, marginBottom: 12 }}><strong>{t.password}:</strong> {data.property.wifi.password}</Typography>
+            <Button href={`WIFI:T:WPA;S:${data.property.wifi.name};P:${data.property.wifi.password};;`} variant="contained" style={{ backgroundColor: "#2563eb", color: "#fff", fontWeight: 800, borderRadius: 14, textTransform: "none", padding: "10px 14px" }}>📱 {t.quickConnectWifi}</Button>
+          </Box>
+
+          <Divider style={{ margin: "18px 0" }} />
+
+          <Typography variant="subtitle1" style={{ fontWeight: 900, color: "#0f172a", marginBottom: 10 }}>{t.contactHost}</Typography>
+
+          <Box style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 14 }}>
+            <Button href={`https://wa.me/${data.property.contact.whatsapp.replace(/\s/g, "")}`} target="_blank" variant="contained" style={{ flex: "1 1 220px", backgroundColor: "#25D366", color: "#fff", fontWeight: 800, borderRadius: 14, padding: "14px 16px", textTransform: "none" }}>💬 {t.whatsapp}</Button>
+            <Button href={`tel:${data.property.contact.phone}`} variant="contained" style={{ flex: "1 1 220px", backgroundColor: "#2563eb", color: "#fff", fontWeight: 800, borderRadius: 14, padding: "14px 16px", textTransform: "none" }}>📞 {t.call}</Button>
+          </Box>
+
+          <Divider style={{ margin: "18px 0" }} />
+
+          <Box style={{ marginTop: 14 }}>
+            <Button href={data.property.maps} target="_blank" variant="contained" style={styles.primaryBtn}>📍 {t.navigateToProperty}</Button>
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
+  );
+
+  const renderPlaces = (titleIcon, title, subtitle, list) => (
+    <Box style={styles.shell}>
+      <Card style={styles.card}>
+        <CardContent>
+          <SectionTitle icon={titleIcon} title={title} subtitle={subtitle} />
+          {list.map((p, idx) => (
+            <PlaceCard key={`${p.name}-${idx}`} icon={p.icon} name={p.name} type={p.type} detail={p.detail} drive={p.drive} maps={p.maps} />
+          ))}
+        </CardContent>
+      </Card>
+    </Box>
+  );
+
+  const ExcursionCard = ({ item }) => (
+    <Card style={{ ...styles.card, marginBottom: 14 }}>
+      <CardContent>
+        <Box style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+          <Box style={{ width: 44, height: 44, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(16, 185, 129, 0.10)", border: "1px solid rgba(16, 185, 129, 0.18)", flexShrink: 0, fontSize: 22 }}>
+            {item.icon}
+          </Box>
+          <Box style={{ flex: 1 }}>
+            <Typography variant="h6" style={{ fontWeight: 900, color: "#0f172a", lineHeight: 1.2 }}>{item.name}</Typography>
+            <Typography variant="body2" style={{ color: "#475569", marginTop: 4 }}>{item.type}</Typography>
+            <Typography variant="body2" style={{ color: "#334155", marginTop: 6 }}>{item.detail}</Typography>
+            {item.drive ? (
+              <Typography variant="body2" style={{ color: "#0f172a", marginTop: 8, fontWeight: 800 }}>🚗 {item.drive}</Typography>
+            ) : null}
+
+            {item.tips && item.tips.length ? (
+              <Box style={{ marginTop: 10 }}>
+                <Typography variant="subtitle2" style={{ fontWeight: 900, color: "#14532d" }}>{t.whatToTake}</Typography>
+                <Box component="ul" style={{ margin: "6px 0 0 16px", padding: 0, color: "#0f172a" }}>
+                  {item.tips.map((tip, idx) => (
+                    <li key={`${item.name}-tip-${idx}`} style={{ marginTop: 4 }}>
+                      <Typography variant="body2" style={{ color: "#0f172a" }}>{tip}</Typography>
+                    </li>
+                  ))}
+                </Box>
+              </Box>
+            ) : null}
+
+            <Box style={{ marginTop: 12, display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <Button href={item.maps} target="_blank" variant="contained" style={styles.secondaryBtn}>📍 {t.navigate}</Button>
+              {item.website ? (
+                <Button href={item.website} target="_blank" variant="outlined" style={{ ...styles.ghostBtn, border: "2px solid rgba(22, 163, 74, 0.25)", color: "#14532d" }}>🌐 {t.website}</Button>
+              ) : null}
+            </Box>
+          </Box>
+        </Box>
+      </CardContent>
+    </Card>
+  );
+
+  const renderExcursions = () => (
+    <Box style={styles.shell}>
+      <Card style={styles.card}>
+        <CardContent>
+          <SectionTitle icon="🗺️" title={t.excursionsTitle} subtitle={t.excursionsTitleSub} />
+          {data.excursions.map((x, idx) => (
+            <ExcursionCard key={`${x.name}-${idx}`} item={x} />
+          ))}
+          <Box style={{ marginTop: 14, padding: 14, borderRadius: 16, background: "rgba(16, 185, 129, 0.08)", border: "1px solid rgba(16, 185, 129, 0.14)" }}>
+            <Typography variant="body2" style={{ color: "#14532d" }}>{t.tipExcursions}</Typography>
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
+  );
+
+  const renderEmergency = () => (
+    <Box style={styles.shell}>
+      <Card style={styles.card}>
+        <CardContent>
+          <SectionTitle icon="🆘" title={t.emergencyTitle} subtitle={t.emergencySub} />
+          {data.emergency.map((e, idx) => (
+            <EmergencyCard key={`${e.number}-${idx}`} icon={e.icon} title={e.title} number={e.number} />
+          ))}
+
+          <Box style={{ marginTop: 14, padding: 14, borderRadius: 16, background: "rgba(239, 68, 68, 0.08)", border: "1px solid rgba(239, 68, 68, 0.14)" }}>
+            <Typography variant="body2" style={{ color: "#7f1d1d" }}>{t.tipEmergency} <strong>112</strong> {t.first}</Typography>
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
+  );
+
+  const renderContent = () => {
+    if (activeTab === "home") return renderHome();
+    if (activeTab === "house") return renderHouse();
+    if (activeTab === "dining") return renderPlaces("🍽️", t.diningTitle, t.diningSub, data.dining);
+    if (activeTab === "beaches") return renderPlaces("🏖️", t.beachesTitle, t.beachesTitleSub, data.beaches);
+    if (activeTab === "essentials") return renderPlaces("🛒", t.essentialsTitle, t.essentialsSub, data.essentials);
+    if (activeTab === "excursions") return renderExcursions();
+    if (activeTab === "emergency") return renderEmergency();
+    return renderHome();
+  };
+
+  return (
+    <Box style={styles.bg}>
+      <Box style={styles.overlay}>
+        <Paper elevation={0} style={styles.header}>
+          <Container maxWidth="md">
+            <Box style={{ textAlign: "center" }}>
+              <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <Box style={{ flex: 1 }} />
+                <Typography variant={isMobile ? "h5" : "h4"} style={{ ...styles.headerTitle, flex: 1 }}>{t.headerTitle}</Typography>
+                <Box style={{ flex: 1, display: "flex", justifyContent: "flex-end", gap: 6 }}>
+                  <Button onClick={() => setLanguage("en")} style={{ minWidth: 36, padding: "4px 8px", fontSize: 20, background: language === "en" ? "rgba(255,255,255,0.25)" : "transparent", borderRadius: 8 }}>🇬🇧</Button>
+                  <Button onClick={() => setLanguage("de")} style={{ minWidth: 36, padding: "4px 8px", fontSize: 20, background: language === "de" ? "rgba(255,255,255,0.25)" : "transparent", borderRadius: 8 }}>🇩🇪</Button>
+                  <Button onClick={() => setLanguage("fr")} style={{ minWidth: 36, padding: "4px 8px", fontSize: 20, background: language === "fr" ? "rgba(255,255,255,0.25)" : "transparent", borderRadius: 8 }}>🇫🇷</Button>
+                  <Button onClick={() => setLanguage("el")} style={{ minWidth: 36, padding: "4px 8px", fontSize: 20, background: language === "el" ? "rgba(255,255,255,0.25)" : "transparent", borderRadius: 8 }}>🇬🇷</Button>
+                </Box>
+              </Box>
+              <Typography variant="body2" style={styles.headerSub}>{t.headerSub}</Typography>
+              <Box style={styles.topNav}>
+                {tabs.map((tab) => (
+                  <TabChip key={tab.id} tab={tab} />
+                ))}
+              </Box>
+            </Box>
+          </Container>
+        </Paper>
+
+        <Container maxWidth="md">{renderContent()}</Container>
+
+        <Box style={{ textAlign: "center", marginTop: 22, padding: "0 16px" }}>
+          <Typography variant="body2" style={{ color: "rgba(15, 23, 42, 0.72)" }}>🌿 {t.enjoyStay}</Typography>
+        </Box>
+
+        <Box style={styles.bottomNav}>
+          <Box style={styles.bottomNavInner}>
+            {tabs.map((tab) => {
+              const selected = activeTab === tab.id;
+              return (
+                <Button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  variant={selected ? "contained" : "text"}
+                  style={{
+                    ...styles.bottomNavBtn,
+                    background: selected ? "rgba(22, 163, 74, 0.12)" : "transparent",
+                    border: selected ? "1px solid rgba(22, 163, 74, 0.22)" : "1px solid rgba(15, 23, 42, 0.06)",
+                    color: "#0f172a",
+                  }}
+                >
+                  <span style={{ fontSize: 18 }}>{tab.icon}</span>
+                  <span style={styles.tiny}>{tab.label}</span>
+                </Button>
+              );
+            })}
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+            ReactDOM.render(<App />, document.getElementById('artifact_react'));
+        } catch(error) {
+            displayError('An error occurred while loading the application.');
+        }
+        window.addEventListener('error', function(event) {
+            displayError(event.message, event.error?.stack);
+        });
+        function displayError(message, stackInfo) {
+            const errorContainer = document.getElementById('error-container');
+            const errorMessage = document.createElement('div');
+            errorMessage.textContent = message;
+            errorContainer.appendChild(errorMessage);
+            if(stackInfo) {
+                const stackErrorMessage = document.createElement('pre');
+                stackErrorMessage.textContent = stackInfo.substring(0, 130);
+                errorContainer.appendChild(stackErrorMessage);
+            }
+            errorContainer.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
