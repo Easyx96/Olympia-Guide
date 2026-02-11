@@ -1266,18 +1266,29 @@ function App() {
       <Box style={styles.overlay}>
         <Paper elevation={0} style={styles.header} component="header" ref={headerRef}>
           <Container maxWidth="md">
-            <Box style={{ textAlign: "center" }}>
+            <Box>
               <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                <Box style={{ flex: 1 }} />
-                <Typography variant={isMobile ? "h5" : "h4"} component="h1" style={{ ...styles.headerTitle, flex: 1 }}>{t.headerTitle}</Typography>
-                <Box style={{ flex: 1, display: "flex", justifyContent: "flex-end", gap: 6 }} role="group" aria-label="Language selection">
+                <Box style={{ display: "flex", alignItems: "center", gap: isMobile ? 8 : 12 }}>
+                  <img 
+                    src="great_escape_logo_transparent.png" 
+                    alt="Great Escape Olympia" 
+                    style={{ 
+                      height: isMobile ? 65 : 90, 
+                      width: "auto",
+                      filter: "brightness(0) invert(1)",
+                      objectFit: "contain",
+                      maxWidth: isMobile ? 180 : 260
+                    }} 
+                  />
+                </Box>
+                <Box style={{ display: "flex", gap: 6 }} role="group" aria-label="Language selection">
                   <Button onClick={() => setLanguage("en")} style={{ minWidth: 36, padding: "4px 8px", fontSize: 20, background: language === "en" ? "rgba(255,255,255,0.25)" : "transparent", borderRadius: 8 }} aria-label="English" aria-pressed={language === "en"}>🇬🇧</Button>
                   <Button onClick={() => setLanguage("de")} style={{ minWidth: 36, padding: "4px 8px", fontSize: 20, background: language === "de" ? "rgba(255,255,255,0.25)" : "transparent", borderRadius: 8 }} aria-label="Deutsch" aria-pressed={language === "de"}>🇩🇪</Button>
                   <Button onClick={() => setLanguage("fr")} style={{ minWidth: 36, padding: "4px 8px", fontSize: 20, background: language === "fr" ? "rgba(255,255,255,0.25)" : "transparent", borderRadius: 8 }} aria-label="Français" aria-pressed={language === "fr"}>🇫🇷</Button>
                   <Button onClick={() => setLanguage("el")} style={{ minWidth: 36, padding: "4px 8px", fontSize: 20, background: language === "el" ? "rgba(255,255,255,0.25)" : "transparent", borderRadius: 8 }} aria-label="Ελληνικά" aria-pressed={language === "el"}>🇬🇷</Button>
                 </Box>
               </Box>
-              <Typography variant="body2" style={styles.headerSub}>{t.headerSub}</Typography>
+              <Typography variant="body2" style={{ ...styles.headerSub, textAlign: "center" }}>{t.headerSub}</Typography>
               <Box style={styles.topNav} role="navigation" aria-label="Main navigation">
                 {tabs.map((tab) => (
                   <TabChip key={tab.id} tab={tab} />
